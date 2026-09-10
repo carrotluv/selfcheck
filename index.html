@@ -125,7 +125,17 @@ input:focus-visible{border-color:var(--focus);box-shadow:0 0 0 3px rgba(11,87,20
 .pl .p{border:1px solid var(--line);border-radius:var(--r-s);padding:var(--sp-3)}
 .pl .pn{font-size:var(--fs-body);font-weight:700;color:var(--ink)}
 .pl .pb{font-size:var(--fs-small);color:var(--ink-2);margin:2px 0 var(--sp-2)}
-.pl .kv{row-gap:var(--sp-1);font-size:var(--fs-small)}
+/* 품목 카드 안 작물 표 — 5열 한 줄, 넘치는 병해충은 말줄임 */
+.ct{display:grid;grid-template-columns:1.4em fit-content(32%) max-content max-content minmax(0,1fr);column-gap:var(--sp-2);row-gap:4px;font-size:var(--fs-small);line-height:1.5;font-variant-numeric:tabular-nums}
+.ct .tr{display:contents}
+.ct .td{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.ct .n{font-weight:700;color:var(--ink-2)}
+.ct .c{font-weight:700;color:var(--ink)}
+.ct .f{text-align:right}
+.ct .d{color:var(--ink-2)}
+.ct .th .td{font-weight:700;color:var(--mute);border-bottom:1px solid var(--line);padding-bottom:2px}
+.ct .tr:not(.th) .td{cursor:pointer}
+.ct .tr.open .td{white-space:normal;overflow:visible}   /* 줄을 누르면 말줄임 풀어 전부 보이기 */
 .pl-sum{font-size:var(--fs-body);font-weight:700;color:var(--ink-2);margin-bottom:var(--sp-2)}
 .more{margin-top:var(--sp-2);height:48px;background:var(--paper);color:var(--accent-ink);border:2px solid var(--line)}
 .pl .p.diff{border-color:var(--red)}
@@ -553,10 +563,19 @@ $('go3').addEventListener('click',function(){
   listOut(out,esc(names)+' 공통 농약 '+common.length+'개'+(useSel?' ('+esc(useSel)+')':''),common,function(pi){return prodCard(pi,cs);});
 });
 // 품목 카드: 품목명 · 용도·상표 · 작물별 안전사용(번호 항목:값)
-function prodCard(pi,cis,extra){
+function safeParts(ci,pi){  // 작물×품목 → {phi:'수확 14일 전'|사용시기 문구, freq:'3회'}
+  var combos=D.cp[ci][pi].map(function(c){return {phi:D.phis[c[0]],freq:D.freqs[c[1]]};});
+  var days=combos.map(function(c){return num(c.phi);}).filter(function(n){return n!=null;});
+  var fs=combos.map(function(c){return fnum(c.freq);}).filter(function(n){return n!=null;});
+  return {phi:days.length?'수확 '+Math.max.apply(null,days)+'일 전':(combos[0].phi&&combos[0].phi!=='-'?combos[0].phi:'-'),freq:fs.length?Math.min.apply(null,fs)+'회':'-'};
+}
+// 품목 카드: 품목명 · 용도·상표 · 작물 표(번호 | 품목 | 시기 | 횟수 | 병해충 — 한 줄씩)
+function prodCard(pi,cis){
   var bs=D.pb[pi].map(function(bi){return D.brands[bi];});
+  var rows=cis.map(function(ci,i){var s=safeParts(ci,pi);var ps=pestsOf(ci,pi);
+    return '<div class="tr"><span class="td n">'+(i+1)+'.</span><span class="td c" title="'+esc(D.crops[ci])+'">'+esc(D.crops[ci])+'</span><span class="td">'+esc(s.phi)+'</span><span class="td f">'+esc(s.freq)+'</span><span class="td d" title="'+esc(ps.join(', '))+'">'+(ps.length?esc(ps.join(', ')):'-')+'</span></div>';}).join('');
   return '<div class="p"><div class="pn">'+esc(D.prods[pi][0])+'</div><div class="pb">'+esc(D.prods[pi][2])+' · '+esc(bs.slice(0,3).join(', '))+(bs.length>3?' 외 '+(bs.length-3)+'개':'')+'</div>'+
-    (cis.length?kv(cis.map(function(ci){return [esc(D.crops[ci]),safeText(ci,pi)+(extra?extra(ci,pi):'')];})):'')+'</div>';
+    (cis.length?'<div class="ct"><div class="tr th"><span class="td n"></span><span class="td c">품목</span><span class="td">시기</span><span class="td f">횟수</span><span class="td d">병해충</span></div>'+rows+'</div>':'')+'</div>';
 }
 // 목록 출력 공통: 요약 줄 + 20개씩 '더 보기'
 function listOut(out,title,items,render){
@@ -568,6 +587,8 @@ function listOut(out,title,items,render){
   out.scrollIntoView({block:'start'});
 }
 var listSeq=0;
+// 작물 표의 줄을 누르면 잘린 병해충·품목명을 펼쳐 보인다
+document.addEventListener('click',function(e){var td=e.target.closest('.ct .td');if(!td)return;var tr=td.parentElement;if(tr.classList.contains('th'))return;tr.classList.toggle('open');});
 function pestsOf(ci,pi){var l=(D.cpp[ci]||{})[pi]||[];return l.map(function(i){return D.pests[i];});}
 
 // ── 농약검색: 상표·품목·성분 → 품목별 등록 작물
@@ -581,7 +602,7 @@ $('go4').addEventListener('click',function(){
   var prodCrops={};for(var c in D.cp){pis.forEach(function(pi){if(D.cp[c][pi])(prodCrops[pi]=prodCrops[pi]||[]).push(+c);});}
   listOut(out,'농약 '+pis.length+'개',pis,function(pi){
     var cs=(prodCrops[pi]||[]).sort(function(a,b){return D.crops[a].localeCompare(D.crops[b]);});
-    var head=prodCard(pi,cs.slice(0,6),function(ci,p){var ps=pestsOf(ci,p);return ps.length?' <small>'+esc(ps.slice(0,3).join(', '))+(ps.length>3?' 외 '+(ps.length-3):'')+'</small>':'';});
+    var head=prodCard(pi,cs.slice(0,6));
     var rest=cs.slice(6).map(function(ci){return D.crops[ci];});
     var tail=rest.length?'<div class="hint" style="margin-top:8px">외 '+esc(rest.slice(0,20).join(', '))+(rest.length>20?' 외 '+(rest.length-20)+'개':'')+'</div>':'';
     return head.replace('<div class="pb">','<div class="pb">등록 작물 '+cs.length+'개 · ').replace(/<\/div>$/,tail+'</div>');
