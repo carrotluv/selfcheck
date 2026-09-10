@@ -125,13 +125,13 @@ input:focus-visible{border-color:var(--focus);box-shadow:0 0 0 3px rgba(11,87,20
 .pl .p{border:1px solid var(--line);border-radius:var(--r-s);padding:var(--sp-3)}
 .pl .pn{font-size:var(--fs-body);font-weight:700;color:var(--ink)}
 .pl .pb{font-size:var(--fs-small);color:var(--ink-2);margin:2px 0 var(--sp-2)}
-/* 품목 카드 안 작물 표 — 5열 한 줄, 넘치는 병해충은 말줄임 */
-.ct{display:grid;grid-template-columns:fit-content(36%) max-content max-content minmax(0,1fr);column-gap:var(--sp-2);row-gap:4px;font-size:var(--fs-small);line-height:1.5;font-variant-numeric:tabular-nums}
-.ct .tr{display:contents}
-.ct .td{min-width:0;text-align:center;white-space:nowrap}   /* 품목·시기·횟수는 가운데 정렬 */
-.ct .c{font-weight:700;color:var(--ink);white-space:normal}
-.ct .d{color:var(--ink-2);text-align:left;white-space:normal;overflow-wrap:anywhere}   /* 병해충이 많으면 칸 안에서 줄을 늘려 전부 적는다 */
-.ct .th .td{font-weight:700;color:var(--mute);border-bottom:1px solid var(--line);padding-bottom:2px}
+/* 품목 카드 안 작물 표 — 엑셀식: 병해충이 길어 행이 높아지면 품목·시기·횟수 칸이 세로 병합처럼 가운데에 온다 */
+.ct{width:100%;border-collapse:collapse;font-size:var(--fs-small);line-height:1.45;font-variant-numeric:tabular-nums;margin-top:2px}
+.ct th,.ct td{border:1px solid var(--line);padding:6px 5px;text-align:center;vertical-align:middle;white-space:nowrap}
+.ct th{font-weight:700;color:var(--ink-2);background:var(--ground)}
+.ct td.c{font-weight:700;color:var(--ink);white-space:normal}
+.ct td.d,.ct th.d{text-align:left}
+.ct td.d{color:var(--ink-2);white-space:normal;overflow-wrap:anywhere;width:99%}   /* 남는 폭은 전부 병해충 칸에 */
 .pl-sum{font-size:var(--fs-body);font-weight:700;color:var(--ink-2);margin-bottom:var(--sp-2)}
 .more{margin-top:var(--sp-2);height:48px;background:var(--paper);color:var(--accent-ink);border:2px solid var(--line)}
 .pl .p.diff{border-color:var(--red)}
@@ -539,13 +539,6 @@ var useSel='';
 Array.prototype.forEach.call(document.querySelectorAll('.chip[data-u]'),function(c){c.addEventListener('click',function(){
   useSel=c.dataset.u;Array.prototype.forEach.call(document.querySelectorAll('.chip[data-u]'),function(o){o.setAttribute('aria-pressed',o===c?'true':'false');});
 });});
-function safeText(ci,pi){  // 작물×품목의 안전사용: 긴 일수·적은 횟수(엄격한 쪽)
-  var combos=D.cp[ci][pi].map(function(c){return {phi:D.phis[c[0]],freq:D.freqs[c[1]]};});
-  var days=combos.map(function(c){return num(c.phi);}).filter(function(n){return n!=null;});
-  var fs=combos.map(function(c){return fnum(c.freq);}).filter(function(n){return n!=null;});
-  var t=days.length?'수확 '+Math.max.apply(null,days)+'일 전까지':(combos[0].phi&&combos[0].phi!=='-'?esc(combos[0].phi):'시기 기준 없음');
-  return t+(fs.length?' · '+Math.min.apply(null,fs)+'회':'');
-}
 $('go3').addEventListener('click',function(){
   var out=$('result3');
   [0,1,2].forEach(function(n){if(mc[n]<0){var v=$('mc'+n).value.trim();var i=D.crops.indexOf(v);if(i>=0)mc[n]=i;}});
@@ -563,15 +556,15 @@ function safeParts(ci,pi){  // 작물×품목 → {phi:'수확 14일 전'|사용
   var combos=D.cp[ci][pi].map(function(c){return {phi:D.phis[c[0]],freq:D.freqs[c[1]]};});
   var days=combos.map(function(c){return num(c.phi);}).filter(function(n){return n!=null;});
   var fs=combos.map(function(c){return fnum(c.freq);}).filter(function(n){return n!=null;});
-  return {phi:days.length?'수확 '+Math.max.apply(null,days)+'일 전':(combos[0].phi&&combos[0].phi!=='-'?combos[0].phi:'-'),freq:fs.length?Math.min.apply(null,fs)+'회':'-'};
+  return {phi:days.length?Math.max.apply(null,days)+'일 전':(combos[0].phi&&combos[0].phi!=='-'?combos[0].phi:'-'),freq:fs.length?Math.min.apply(null,fs)+'회':'-'};
 }
 // 품목 카드: 품목명 · 용도·상표 · 작물 표(번호 | 품목 | 시기 | 횟수 | 병해충 — 한 줄씩)
 function prodCard(pi,cis){
   var bs=D.pb[pi].map(function(bi){return D.brands[bi];});
-  var rows=cis.map(function(ci,i){var s=safeParts(ci,pi);var ps=pestsOf(ci,pi);
-    return '<div class="tr"><span class="td c">'+esc(D.crops[ci])+'</span><span class="td">'+esc(s.phi)+'</span><span class="td f">'+esc(s.freq)+'</span><span class="td d">'+(ps.length?esc(ps.join(', ')):'-')+'</span></div>';}).join('');
+  var rows=cis.map(function(ci){var s=safeParts(ci,pi);var ps=pestsOf(ci,pi);
+    return '<tr><td class="c">'+esc(D.crops[ci])+'</td><td>'+esc(s.phi)+'</td><td>'+esc(s.freq)+'</td><td class="d">'+(ps.length?esc(ps.join(', ')):'-')+'</td></tr>';}).join('');
   return '<div class="p"><div class="pn">'+esc(D.prods[pi][0])+'</div><div class="pb">'+esc(D.prods[pi][2])+' · '+esc(bs.slice(0,3).join(', '))+(bs.length>3?' 외 '+(bs.length-3)+'개':'')+'</div>'+
-    (cis.length?'<div class="ct"><div class="tr th"><span class="td c">품목</span><span class="td">시기</span><span class="td f">횟수</span><span class="td d">병해충</span></div>'+rows+'</div>':'')+'</div>';
+    (cis.length?'<table class="ct"><thead><tr><th>품목</th><th>수확 전</th><th>횟수</th><th class="d">병해충</th></tr></thead><tbody>'+rows+'</tbody></table>':'')+'</div>';
 }
 // 목록 출력 공통: 요약 줄 + 20개씩 '더 보기'
 function listOut(out,title,items,render){
