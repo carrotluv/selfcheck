@@ -130,9 +130,7 @@ input:focus-visible{border-color:var(--focus);box-shadow:0 0 0 3px rgba(11,87,20
 .ct .tr{display:contents}
 .ct .td{min-width:0;text-align:center;white-space:nowrap}   /* 품목·시기·횟수는 가운데 정렬 */
 .ct .c{font-weight:700;color:var(--ink);white-space:normal}
-.ct .d{color:var(--ink-2);text-align:left;white-space:normal;overflow-wrap:anywhere}
-.ct .d.w{grid-column:1/5;padding:0 0 4px 4px;border-bottom:1px solid var(--line-2)}   /* 병해충이 많으면 한 줄 아래에 전부 적는다 */
-.ct .d.w b{color:var(--ink-2);font-weight:700}
+.ct .d{color:var(--ink-2);text-align:left;white-space:normal;overflow-wrap:anywhere}   /* 병해충이 많으면 칸 안에서 줄을 늘려 전부 적는다 */
 .ct .th .td{font-weight:700;color:var(--mute);border-bottom:1px solid var(--line);padding-bottom:2px}
 .pl-sum{font-size:var(--fs-body);font-weight:700;color:var(--ink-2);margin-bottom:var(--sp-2)}
 .more{margin-top:var(--sp-2);height:48px;background:var(--paper);color:var(--accent-ink);border:2px solid var(--line)}
@@ -571,9 +569,7 @@ function safeParts(ci,pi){  // 작물×품목 → {phi:'수확 14일 전'|사용
 function prodCard(pi,cis){
   var bs=D.pb[pi].map(function(bi){return D.brands[bi];});
   var rows=cis.map(function(ci,i){var s=safeParts(ci,pi);var ps=pestsOf(ci,pi);
-    var pt=ps.join(', ');var wide=pt.length>12;   // 병해충 칸에 안 들어가면 그 줄 아래에 전부 적는다
-    return '<div class="tr"><span class="td c">'+esc(D.crops[ci])+'</span><span class="td">'+esc(s.phi)+'</span><span class="td f">'+esc(s.freq)+'</span>'+
-      (wide?'<span class="td d">'+ps.length+'종</span><span class="td d w"><b>병해충</b> '+esc(pt)+'</span>':'<span class="td d">'+(ps.length?esc(pt):'-')+'</span>')+'</div>';}).join('');
+    return '<div class="tr"><span class="td c">'+esc(D.crops[ci])+'</span><span class="td">'+esc(s.phi)+'</span><span class="td f">'+esc(s.freq)+'</span><span class="td d">'+(ps.length?esc(ps.join(', ')):'-')+'</span></div>';}).join('');
   return '<div class="p"><div class="pn">'+esc(D.prods[pi][0])+'</div><div class="pb">'+esc(D.prods[pi][2])+' · '+esc(bs.slice(0,3).join(', '))+(bs.length>3?' 외 '+(bs.length-3)+'개':'')+'</div>'+
     (cis.length?'<div class="ct"><div class="tr th"><span class="td c">품목</span><span class="td">시기</span><span class="td f">횟수</span><span class="td d">병해충</span></div>'+rows+'</div>':'')+'</div>';
 }
