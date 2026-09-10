@@ -132,7 +132,7 @@ input:focus-visible{border-color:var(--focus);box-shadow:0 0 0 3px rgba(11,87,20
 .ct th,.ct td{border:1px solid var(--line);padding:6px 5px;text-align:center;vertical-align:middle;white-space:nowrap}
 .ct th{font-weight:700;color:var(--ink-2);background:var(--ground)}   /* 헤더는 병해충 포함 전부 가운데 */
 .ct col.w1{width:27%}.ct col.w2{width:22%}.ct col.w3{width:13%}   /* 나머지 38%가 병해충 — 세로로 길어지더라도 헤더 간격 확보 */
-.ct td{white-space:normal}   /* '파종.정식기'처럼 긴 시기 문구가 옆 칸을 침범하지 않게 칸 안에서 줄바꿈 */
+.ct td{white-space:normal;overflow-wrap:anywhere}   /* '파종․정식기'처럼 긴 한 단어도 옆 칸을 침범하지 않게 칸 안에서 줄바꿈 */
 .ct td.c{font-weight:700;color:var(--ink)}
 .ct td.d{color:var(--ink-2);white-space:normal;overflow-wrap:anywhere}   /* 병해충도 가운데 — 표는 헤더·내용 전부 가운데 정렬 */
 .pl-sum{font-size:var(--fs-body);font-weight:700;color:var(--ink-2);margin-bottom:var(--sp-2)}
