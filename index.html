@@ -126,12 +126,12 @@ input:focus-visible{border-color:var(--focus);box-shadow:0 0 0 3px rgba(11,87,20
 .pl .pn{font-size:var(--fs-body);font-weight:700;color:var(--ink)}
 .pl .pb{font-size:var(--fs-small);color:var(--ink-2);margin:2px 0 var(--sp-2)}
 /* 품목 카드 안 작물 표 — 엑셀식: 병해충이 길어 행이 높아지면 품목·시기·횟수 칸이 세로 병합처럼 가운데에 온다 */
-.ct{width:100%;border-collapse:collapse;font-size:var(--fs-small);line-height:1.45;font-variant-numeric:tabular-nums;margin-top:2px}
+.ct{width:100%;table-layout:fixed;border-collapse:collapse;font-size:var(--fs-small);line-height:1.45;font-variant-numeric:tabular-nums;margin-top:2px}
 .ct th,.ct td{border:1px solid var(--line);padding:6px 5px;text-align:center;vertical-align:middle;white-space:nowrap}
-.ct th{font-weight:700;color:var(--ink-2);background:var(--ground)}
+.ct th{font-weight:700;color:var(--ink-2);background:var(--ground)}   /* 헤더는 병해충 포함 전부 가운데 */
+.ct col.w1{width:27%}.ct col.w2{width:22%}.ct col.w3{width:13%}   /* 나머지 38%가 병해충 — 세로로 길어지더라도 헤더 간격 확보 */
 .ct td.c{font-weight:700;color:var(--ink);white-space:normal}
-.ct td.d,.ct th.d{text-align:left}
-.ct td.d{color:var(--ink-2);white-space:normal;overflow-wrap:anywhere;width:99%}   /* 남는 폭은 전부 병해충 칸에 */
+.ct td.d{color:var(--ink-2);text-align:left;white-space:normal;overflow-wrap:anywhere}
 .pl-sum{font-size:var(--fs-body);font-weight:700;color:var(--ink-2);margin-bottom:var(--sp-2)}
 .more{margin-top:var(--sp-2);height:48px;background:var(--paper);color:var(--accent-ink);border:2px solid var(--line)}
 .pl .p.diff{border-color:var(--red)}
@@ -564,7 +564,7 @@ function prodCard(pi,cis){
   var rows=cis.map(function(ci){var s=safeParts(ci,pi);var ps=pestsOf(ci,pi);
     return '<tr><td class="c">'+esc(D.crops[ci])+'</td><td>'+esc(s.phi)+'</td><td>'+esc(s.freq)+'</td><td class="d">'+(ps.length?esc(ps.join(', ')):'-')+'</td></tr>';}).join('');
   return '<div class="p"><div class="pn">'+esc(D.prods[pi][0])+'</div><div class="pb">'+esc(D.prods[pi][2])+' · '+esc(bs.slice(0,3).join(', '))+(bs.length>3?' 외 '+(bs.length-3)+'개':'')+'</div>'+
-    (cis.length?'<table class="ct"><thead><tr><th>품목</th><th>수확 전</th><th>횟수</th><th class="d">병해충</th></tr></thead><tbody>'+rows+'</tbody></table>':'')+'</div>';
+    (cis.length?'<table class="ct"><colgroup><col class="w1"><col class="w2"><col class="w3"><col></colgroup><thead><tr><th>품목</th><th>수확 전</th><th>횟수</th><th>병해충</th></tr></thead><tbody>'+rows+'</tbody></table>':'')+'</div>';
 }
 // 목록 출력 공통: 요약 줄 + 20개씩 '더 보기'
 function listOut(out,title,items,render){
