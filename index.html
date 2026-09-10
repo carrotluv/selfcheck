@@ -12,6 +12,7 @@
   --paper:#ffffff;--ground:#f2f4f1;--ink:#16201a;--ink-2:#3f4b45;--mute:#4a5568;--line:#cfd6d0;--line-2:#e6ebe7;
   --accent:#1c6a44;--accent-ink:#14533a;--accent-bg:#e2f0e7;
   --red:#b0271b;--red-bg:#fdeceb;--amber-ink:#7a4d00;--amber-bg:#fbf1dc;--focus:#0b57d0;
+  --rule:rgba(22,32,26,.14);   /* 색 카드 위 행 구분선 (배경색 무관하게 같은 농도) */
   --fs-title:24px;--fs-big:34px;--fs-input:21px;--fs-body:18px;--fs-label:17px;--fs-small:16px;
   --h-ctl:60px;--r:12px;--r-s:8px;   /* 디자인 라이브러리 모서리 2단계: 컨트롤 8 · 카드 12 · 알약 */
   --sp-1:6px;--sp-2:10px;--sp-3:14px;--sp-4:18px;--sp-5:24px;--sp-6:32px;
@@ -110,16 +111,16 @@ input:focus-visible{border-color:var(--focus);box-shadow:0 0 0 3px rgba(11,87,20
 .res p{font-size:var(--fs-body);color:var(--ink)}
 .res .msg{font-size:var(--fs-body);color:var(--ink-2);margin-top:var(--sp-3)}
 /* 결과 항목 — 번호 · 항목명 · 값 한 줄씩 */
-/* 목록 전체가 한 그리드라 번호·항목명·값 세로줄이 모든 행에서 맞는다 (항목명 열은 최대 45%) */
-.kv{list-style:none;display:grid;grid-template-columns:1.4em fit-content(45%) 1fr;column-gap:var(--sp-2);row-gap:var(--sp-2);align-items:baseline;font-size:var(--fs-body);line-height:1.5}
+/* 결과 항목 — 항목명 열·값 열 두 줄기가 한 그리드라 모든 행에서 세로줄이 맞는다. 연번 없음, 행 사이 가는 선 */
+.kv{list-style:none;display:grid;grid-template-columns:fit-content(40%) 1fr;column-gap:var(--sp-4);font-size:var(--fs-body);line-height:1.5;border-top:1px solid var(--rule)}
 .kv li{display:contents}
-.kv .kn{font-weight:700;color:var(--ink-2);font-variant-numeric:tabular-nums}
-.kv .kl{font-weight:700;color:var(--ink-2)}
-.kv .kl::after{content:":"}
+.kv .kl,.kv .kx{padding:var(--sp-2) 0;border-bottom:1px solid var(--rule)}
+.kv .kl{color:var(--ink-2);font-weight:400;white-space:nowrap}
 .kv .kx{font-weight:700;color:var(--ink);min-width:0}
 .kv .kx small{display:block;font-size:var(--fs-small);font-weight:400;color:var(--ink-2)}
 .kv .ng{color:var(--red)}
-.kv li.full .kx{grid-column:2/4}   /* 긴 목록 값은 항목명 아래 줄로 */
+.kv li.full .kl{border-bottom:0;padding-bottom:0}
+.kv li.full .kx{grid-column:1/3;padding-top:2px}   /* 긴 목록 값은 항목명 아래 줄로 */
 /* 공통 농약 목록 — 품목 한 장씩, 작물별 안전사용은 번호 항목:값 줄 */
 .pl{display:flex;flex-direction:column;gap:var(--sp-2)}
 .pl .p{border:1px solid var(--line);border-radius:var(--r-s);padding:var(--sp-3)}
@@ -514,7 +515,7 @@ function run(){
   out.innerHTML='<div class="res '+cls+'">'+html+'</div>';
 }
 function uniq(a){return a.filter(function(v,i){return a.indexOf(v)===i;});}
-function kv(rows){return '<ol class="kv">'+rows.map(function(r,i){return '<li'+(r[2]?' class="full"':'')+'><span class="kn">'+(i+1)+'.</span><span class="kl">'+r[0]+'</span><span class="kx">'+r[1]+'</span></li>';}).join('')+'</ol>';}
+function kv(rows){return '<ul class="kv">'+rows.map(function(r){return '<li'+(r[2]?' class="full"':'')+'><span class="kl">'+r[0]+'</span><span class="kx">'+r[1]+'</span></li>';}).join('')+'</ul>';}
 function kos(pi){  // 품목명에서 제형을 뗀 한글 성분명 (혼합제는 성분별)
   var n=D.prods[pi][0].replace(/\s+\S+$/,'');return n.split(/[.·]/).map(function(s){return s.trim();}).filter(Boolean);
 }
