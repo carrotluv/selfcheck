@@ -110,22 +110,22 @@ input:focus-visible{border-color:var(--focus);box-shadow:0 0 0 3px rgba(11,87,20
 .res p{font-size:var(--fs-body);color:var(--ink)}
 .res .msg{font-size:var(--fs-body);color:var(--ink-2);margin-top:var(--sp-3)}
 /* 결과 항목 — 번호 · 항목명 · 값 한 줄씩 */
-.kv{list-style:none;counter-reset:kv;display:flex;flex-direction:column;gap:var(--sp-2)}
-.kv li{counter-increment:kv;display:grid;grid-template-columns:1.4em auto 1fr;gap:0 var(--sp-2);align-items:baseline;font-size:var(--fs-body);line-height:1.5}
-.kv li::before{content:counter(kv) ".";font-weight:700;color:var(--ink-2);font-variant-numeric:tabular-nums}
-.kv .kl{font-weight:700;color:var(--ink-2);white-space:nowrap}
+/* 목록 전체가 한 그리드라 번호·항목명·값 세로줄이 모든 행에서 맞는다 (항목명 열은 최대 45%) */
+.kv{list-style:none;display:grid;grid-template-columns:1.4em fit-content(45%) 1fr;column-gap:var(--sp-2);row-gap:var(--sp-2);align-items:baseline;font-size:var(--fs-body);line-height:1.5}
+.kv li{display:contents}
+.kv .kn{font-weight:700;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.kv .kl{font-weight:700;color:var(--ink-2)}
 .kv .kl::after{content:":"}
-.kv .kx{font-weight:700;color:var(--ink)}
+.kv .kx{font-weight:700;color:var(--ink);min-width:0}
 .kv .kx small{display:block;font-size:var(--fs-small);font-weight:400;color:var(--ink-2)}
 .kv .ng{color:var(--red)}
-.kv li.full .kx{grid-column:2/4;margin-top:2px}   /* 긴 목록 값은 항목명 아래 줄로 */
+.kv li.full .kx{grid-column:2/4}   /* 긴 목록 값은 항목명 아래 줄로 */
 /* 공통 농약 목록 — 품목 한 장씩, 작물별 안전사용은 번호 항목:값 줄 */
 .pl{display:flex;flex-direction:column;gap:var(--sp-2)}
 .pl .p{border:1px solid var(--line);border-radius:var(--r-s);padding:var(--sp-3)}
 .pl .pn{font-size:var(--fs-body);font-weight:700;color:var(--ink)}
 .pl .pb{font-size:var(--fs-small);color:var(--ink-2);margin:2px 0 var(--sp-2)}
-.pl .kv{gap:var(--sp-1)}
-.pl .kv li{font-size:var(--fs-small)}
+.pl .kv{row-gap:var(--sp-1);font-size:var(--fs-small)}
 .pl-sum{font-size:var(--fs-body);font-weight:700;color:var(--ink-2);margin-bottom:var(--sp-2)}
 .more{margin-top:var(--sp-2);height:48px;background:var(--paper);color:var(--accent-ink);border:2px solid var(--line)}
 .pl .p.diff{border-color:var(--red)}
@@ -508,7 +508,7 @@ function run(){
   out.innerHTML='<div class="res '+cls+'">'+html+'</div>';
 }
 function uniq(a){return a.filter(function(v,i){return a.indexOf(v)===i;});}
-function kv(rows){return '<ol class="kv">'+rows.map(function(r){return '<li'+(r[2]?' class="full"':'')+'><span class="kl">'+r[0]+'</span><span class="kx">'+r[1]+'</span></li>';}).join('')+'</ol>';}
+function kv(rows){return '<ol class="kv">'+rows.map(function(r,i){return '<li'+(r[2]?' class="full"':'')+'><span class="kn">'+(i+1)+'.</span><span class="kl">'+r[0]+'</span><span class="kx">'+r[1]+'</span></li>';}).join('')+'</ol>';}
 function kos(pi){  // 품목명에서 제형을 뗀 한글 성분명 (혼합제는 성분별)
   var n=D.prods[pi][0].replace(/\s+\S+$/,'');return n.split(/[.·]/).map(function(s){return s.trim();}).filter(Boolean);
 }
@@ -583,7 +583,8 @@ $('go4').addEventListener('click',function(){
     var cs=(prodCrops[pi]||[]).sort(function(a,b){return D.crops[a].localeCompare(D.crops[b]);});
     var head=prodCard(pi,cs.slice(0,6),function(ci,p){var ps=pestsOf(ci,p);return ps.length?' <small>'+esc(ps.slice(0,3).join(', '))+(ps.length>3?' 외 '+(ps.length-3):'')+'</small>':'';});
     var rest=cs.slice(6).map(function(ci){return D.crops[ci];});
-    return head.replace('<div class="pb">','<div class="pb">등록 작물 '+cs.length+'개 · ')+(rest.length?'<div class="hint" style="margin:-6px 0 8px 14px">외 '+esc(rest.slice(0,20).join(', '))+(rest.length>20?' 외 '+(rest.length-20)+'개':'')+'</div>':'');
+    var tail=rest.length?'<div class="hint" style="margin-top:8px">외 '+esc(rest.slice(0,20).join(', '))+(rest.length>20?' 외 '+(rest.length-20)+'개':'')+'</div>':'';
+    return head.replace('<div class="pb">','<div class="pb">등록 작물 '+cs.length+'개 · ').replace(/<\/div>$/,tail+'</div>');
   });
 });
 
