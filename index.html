@@ -138,8 +138,8 @@ input:focus-visible{border-color:var(--focus);box-shadow:0 0 0 3px rgba(11,87,20
 .more{margin-top:var(--sp-2);height:48px;background:var(--paper);color:var(--accent-ink);border:2px solid var(--line)}
 .pl .p.diff{border-color:var(--red)}
 .tag{display:inline-block;font-size:var(--fs-small);font-weight:700;border:2px solid;border-radius:20px;padding:1px 10px;white-space:nowrap;vertical-align:2px}
-.tag.r{color:var(--red);border-color:var(--red)}
-.tag.g{color:var(--ink-2);border-color:var(--line)}
+.tag.r{color:var(--red);border-color:var(--red)}            /* 다름 = 빨강 테두리 */
+.tag.g{color:var(--accent-ink);border-color:var(--accent)}  /* 같음 = 초록 테두리 */
 .pl-sum .ng{color:var(--red)}
 .note{margin-top:var(--sp-3);padding:var(--sp-3);border-radius:var(--r-s);background:var(--paper);border:1px solid var(--line);font-size:var(--fs-small);color:var(--ink-2)}
 .note b{color:var(--ink)}
@@ -609,9 +609,9 @@ $('go5').addEventListener('click',function(){
   if(!common.length){out.innerHTML='<div class="res warn"><div class="k">'+esc(names)+'에 같이 등록된 농약이 없어요</div></div>';return;}
   function phiDays(ci,pi){var d=D.cp[ci][pi].map(function(c){return num(D.phis[c[0]]);}).filter(function(n){return n!=null;});return d.length?Math.max.apply(null,d):null;}
   var rows=common.map(function(pi){var ds=cs.map(function(ci){return phiDays(ci,pi);});var same=ds.every(function(d){return d===ds[0];});return {pi:pi,same:same,ds:ds};});
-  rows.sort(function(a,b){return (a.same-b.same)||D.prods[a.pi][0].localeCompare(D.prods[b.pi][0]);});
+  rows.sort(function(a,b){return (b.same-a.same)||D.prods[a.pi][0].localeCompare(D.prods[b.pi][0]);});   // 일수 같은 농약을 맨 위로
   var nSame=rows.filter(function(r){return r.same;}).length;
-  listOut(out,esc(names)+' 공통 '+rows.length+'개 — 일수 같음 '+nSame+' · <span class="ng">다름 '+(rows.length-nSame)+'</span>',rows,function(r){
+  listOut(out,esc(names)+' 공통 '+rows.length+'개 — <span class="tag g">같음</span> '+nSame+' · <span class="tag r">다름</span> '+(rows.length-nSame),rows,function(r){
     var cls=r.same?'':' diff';
     return prodCard(r.pi,cs).replace('<div class="p">','<div class="p'+cls+'">').replace('<div class="pn">','<div class="pn">'+(r.same?'<span class="tag g">같음</span>':'<span class="tag r">다름</span>')+' ');
   });
