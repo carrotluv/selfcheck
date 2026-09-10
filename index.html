@@ -113,10 +113,10 @@ input:focus-visible{border-color:var(--focus);box-shadow:0 0 0 3px rgba(11,87,20
 .res .msg{font-size:var(--fs-body);color:var(--ink-2);margin-top:var(--sp-3)}
 /* 결과 항목 — 번호 · 항목명 · 값 한 줄씩 */
 /* 결과 항목 — 항목명 열·값 열 두 줄기가 한 그리드라 모든 행에서 세로줄이 맞는다. 연번 없음, 행 사이 가는 선 */
-.kv{list-style:none;display:grid;grid-template-columns:fit-content(40%) 1fr;font-size:var(--fs-body);line-height:1.5;border-top:1px solid var(--rule)}
+.kv{list-style:none;display:grid;grid-template-columns:2fr 3fr;font-size:var(--fs-body);line-height:1.5;border-top:1px solid var(--rule);text-align:center}   /* 항목명·값 모두 가운데 */
 .kv li{display:contents}
-.kv .kl,.kv .kx{padding:var(--sp-2) 0;border-bottom:1px solid var(--rule)}   /* 열 사이 간격은 항목명 오른쪽 여백으로 — 구분선이 끊기지 않게 */
-.kv .kl{color:var(--ink-2);font-weight:400;white-space:nowrap;padding-right:var(--sp-4)}
+.kv .kl,.kv .kx{padding:var(--sp-2) 4px;border-bottom:1px solid var(--rule)}
+.kv .kl{color:var(--ink-2);font-weight:400;white-space:nowrap}
 .kv .kx{font-weight:700;color:var(--ink);min-width:0}
 .kv .kx small{display:block;font-size:var(--fs-small);font-weight:400;color:var(--ink-2)}
 .kv .ng{color:var(--red)}
