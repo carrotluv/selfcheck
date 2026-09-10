@@ -9,7 +9,8 @@
 <style>
 /* Hallmark · component-scope: 계산기형 단일 화면 · tone: utilitarian · 어르신 기준 큰 글자 · 아이콘 없음 */
 :root{
-  --paper:#ffffff;--ground:#f2f4f1;--ink:#16201a;--ink-2:#3f4b45;--mute:#4a5568;--line:#cfd6d0;--line-2:#e6ebe7;
+  /* 글자는 회색 없이 검정 하나 — 위계는 굵기·크기로만 (디자인 라이브러리 '회색 텍스트 금지'). --ink-2·--mute는 호환용 별칭 */
+  --paper:#ffffff;--ground:#f2f4f1;--ink:#16201a;--ink-2:#16201a;--mute:#16201a;--placeholder:#4a5568;--line:#cfd6d0;--line-2:#e6ebe7;
   --accent:#1c6a44;--accent-ink:#14533a;--accent-bg:#e2f0e7;
   --red:#b0271b;--red-bg:#fdeceb;--amber-ink:#7a4d00;--amber-bg:#fbf1dc;--focus:#0b57d0;
   --rule:rgba(22,32,26,.14);   /* 색 카드 위 행 구분선 (배경색 무관하게 같은 농도) */
@@ -45,7 +46,7 @@ label{display:block;font-size:var(--fs-label);font-weight:700;color:var(--ink-2)
 .hint{font-size:var(--fs-small);color:var(--mute);margin-top:var(--sp-1)}
 input[type=text],input[type=number]{width:100%;height:var(--h-ctl);border:2px solid var(--line);border-radius:var(--r-s);padding:0 var(--sp-3);
   font:inherit;font-size:var(--fs-input);color:var(--ink);background:var(--paper);outline:none;appearance:none;-webkit-appearance:none;min-width:0}
-input::placeholder{color:var(--mute);opacity:1}
+input::placeholder{color:var(--placeholder);opacity:1}   /* 입력 예시만 옅게 — 실제 값과 구분 */
 input:focus-visible{border-color:var(--focus);box-shadow:0 0 0 3px rgba(11,87,208,.25)}
 /* 날짜 선택 — 브라우저 기본 달력은 글자를 못 키워서 자체 달력(큰 칸) */
 .dbtn{display:flex;align-items:center;justify-content:space-between;width:100%;height:var(--h-ctl);border:2px solid var(--line);border-radius:var(--r-s);padding:0 var(--sp-3);
@@ -112,10 +113,10 @@ input:focus-visible{border-color:var(--focus);box-shadow:0 0 0 3px rgba(11,87,20
 .res .msg{font-size:var(--fs-body);color:var(--ink-2);margin-top:var(--sp-3)}
 /* 결과 항목 — 번호 · 항목명 · 값 한 줄씩 */
 /* 결과 항목 — 항목명 열·값 열 두 줄기가 한 그리드라 모든 행에서 세로줄이 맞는다. 연번 없음, 행 사이 가는 선 */
-.kv{list-style:none;display:grid;grid-template-columns:fit-content(40%) 1fr;column-gap:var(--sp-4);font-size:var(--fs-body);line-height:1.5;border-top:1px solid var(--rule)}
+.kv{list-style:none;display:grid;grid-template-columns:fit-content(40%) 1fr;font-size:var(--fs-body);line-height:1.5;border-top:1px solid var(--rule)}
 .kv li{display:contents}
-.kv .kl,.kv .kx{padding:var(--sp-2) 0;border-bottom:1px solid var(--rule)}
-.kv .kl{color:var(--ink-2);font-weight:400;white-space:nowrap}
+.kv .kl,.kv .kx{padding:var(--sp-2) 0;border-bottom:1px solid var(--rule)}   /* 열 사이 간격은 항목명 오른쪽 여백으로 — 구분선이 끊기지 않게 */
+.kv .kl{color:var(--ink-2);font-weight:400;white-space:nowrap;padding-right:var(--sp-4)}
 .kv .kx{font-weight:700;color:var(--ink);min-width:0}
 .kv .kx small{display:block;font-size:var(--fs-small);font-weight:400;color:var(--ink-2)}
 .kv .ng{color:var(--red)}
@@ -157,7 +158,7 @@ details.card .body{margin-top:var(--sp-3)}
 .src small{display:block;font-size:var(--fs-small);color:var(--mute)}
 .empty{color:var(--mute);font-size:var(--fs-body)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
-@media (prefers-contrast:more){:root{--line:#8a948e;--mute:#3f4b45}}
+@media (prefers-contrast:more){:root{--line:#8a948e;--placeholder:#16201a}}
 @media (min-width:600px){body{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
 @media (max-width:340px){.dbtn{font-size:var(--fs-body)}}   /* 320px 폭에서 날짜 한 줄 유지 */
 </style>
