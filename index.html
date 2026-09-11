@@ -44,7 +44,7 @@ h2{font-size:var(--fs-label);font-weight:700;color:var(--ink-2);margin-bottom:va
 .fld{margin-bottom:var(--sp-4);position:relative}
 .fld:last-of-type{margin-bottom:0}
 label{display:block;font-size:var(--fs-label);font-weight:700;color:var(--ink-2);margin-bottom:var(--sp-1)}
-.hint{font-size:var(--fs-small);color:var(--mute);margin-top:var(--sp-1);text-wrap:pretty}   /* 마지막 줄에 한 단어만 남는 외톨이 줄 방지 */
+.hint{font-size:var(--fs-small);color:var(--mute);margin-top:var(--sp-1);text-wrap:pretty;letter-spacing:-.05em}   /* 안내문은 자간을 줄여 한 줄에 — 한글 받침이 겹치지 않는 하한 -.05em */   /* 마지막 줄에 한 단어만 남는 외톨이 줄 방지 */
 input[type=text],input[type=number]{width:100%;height:var(--h-ctl);border:2px solid var(--line);border-radius:var(--r-s);padding:0 var(--sp-3);
   font:inherit;font-size:var(--fs-input);color:var(--ink);background:var(--paper);outline:none;appearance:none;-webkit-appearance:none;min-width:0}
 input::placeholder{color:var(--placeholder);opacity:1}   /* 입력 예시만 옅게 — 실제 값과 구분 */
