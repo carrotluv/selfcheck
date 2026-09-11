@@ -44,7 +44,7 @@ h2{font-size:var(--fs-label);font-weight:700;color:var(--ink-2);margin-bottom:va
 .fld{margin-bottom:var(--sp-4);position:relative}
 .fld:last-of-type{margin-bottom:0}
 label{display:block;font-size:var(--fs-label);font-weight:700;color:var(--ink-2);margin-bottom:var(--sp-1)}
-.hint{font-size:var(--fs-small);color:var(--mute);margin-top:var(--sp-1)}
+.hint{font-size:var(--fs-small);color:var(--mute);margin-top:var(--sp-1);text-wrap:pretty}   /* 마지막 줄에 한 단어만 남는 외톨이 줄 방지 */
 input[type=text],input[type=number]{width:100%;height:var(--h-ctl);border:2px solid var(--line);border-radius:var(--r-s);padding:0 var(--sp-3);
   font:inherit;font-size:var(--fs-input);color:var(--ink);background:var(--paper);outline:none;appearance:none;-webkit-appearance:none;min-width:0}
 input::placeholder{color:var(--placeholder);opacity:1}   /* 입력 예시만 옅게 — 실제 값과 구분 */
@@ -233,7 +233,7 @@ details.card .body{margin-top:var(--sp-3)}
   <details class="card" id="det">
     <summary>검사에서 검출값이 나왔다면</summary>
     <div class="body">
-      <p class="hint" style="margin:0 0 var(--sp-3)">분석실 결과지의 검출값과 검사 접수일을 넣으면 출하할 수 있는 날을 참고로 계산합니다. 위의 작물·농약을 그대로 씁니다.</p>
+      <p class="hint" style="margin:0 0 var(--sp-3)">분석실 결과지의 검출값과 검사 접수일을 넣으면 출하할 수 있는 날을 참고로 계산합니다. 위의 작물·농약을 <span style="white-space:nowrap">그대로 씁니다.</span></p>
       <div class="fld">
         <label for="val">검출값 (mg/kg)</label>
         <input type="number" id="val" inputmode="decimal" step="0.001" min="0" placeholder="예) 0.35">
@@ -253,7 +253,7 @@ details.card .body{margin-top:var(--sp-3)}
 <div class="tab-p" id="t1" role="tabpanel" hidden>
   <section class="card" aria-labelledby="t1-title">
     <h2 id="t1-title">여러 작물에 같이 쓸 농약 찾기</h2>
-    <p class="hint" style="margin:0 0 var(--sp-3)">작물을 2~3개 넣으면 전부에 등록된 농약만 보여줍니다.</p>
+    <p class="hint" style="margin:0 0 var(--sp-3)">작물을 2~3개 넣으면 전부에 <span style="white-space:nowrap">등록된 농약만 보여줍니다.</span></p>
     <div class="fld"><label for="mc0">작물 1</label><input type="text" id="mc0" placeholder="예) 상추" autocomplete="off"><div class="ac" id="mc0-ac" hidden role="listbox"></div></div>
     <div class="fld"><label for="mc1">작물 2</label><input type="text" id="mc1" placeholder="예) 시금치" autocomplete="off"><div class="ac" id="mc1-ac" hidden role="listbox"></div></div>
     <div class="fld"><label for="mc2">작물 3 (없어도 됨)</label><input type="text" id="mc2" autocomplete="off"><div class="ac" id="mc2-ac" hidden role="listbox"></div></div>
@@ -274,7 +274,7 @@ details.card .body{margin-top:var(--sp-3)}
 <div class="tab-p" id="t2" role="tabpanel" hidden>
   <section class="card" aria-labelledby="t2-title">
     <h2 id="t2-title">농약 이름으로 찾기</h2>
-    <p class="hint" style="margin:0 0 var(--sp-3)">상표명·품목명·성분명 아무거나 적으세요. 어느 작물에 등록됐는지 보여줍니다.</p>
+    <p class="hint" style="margin:0 0 var(--sp-3)">상표명·품목명·성분명 아무거나 적으세요. 어느 작물에 <span style="white-space:nowrap">등록됐는지 보여줍니다.</span></p>
     <div class="fld"><label for="sq">농약 이름</label><input type="text" id="sq" placeholder="예) 모스피란, 아바멕틴" autocomplete="off" enterkeyhint="search"><div class="ac" id="sq-ac" hidden role="listbox"></div></div>
     <button type="button" class="btn" id="go4">찾기</button>
   </section>
@@ -284,7 +284,7 @@ details.card .body{margin-top:var(--sp-3)}
 <div class="tab-p" id="t3" role="tabpanel" hidden>
   <section class="card" aria-labelledby="t3-title">
     <h2 id="t3-title">작물별 수확 전 일수(PHI) 비교</h2>
-    <p class="hint" style="margin:0 0 var(--sp-3)">같은 농약이라도 작물마다 수확 전 일수가 다릅니다. 작물 2~3개를 넣어 비교하세요.</p>
+    <p class="hint" style="margin:0 0 var(--sp-3)">같은 농약이라도 작물마다 수확 전 일수가 다릅니다. 작물 2~3개를 <span style="white-space:nowrap">넣어 비교하세요.</span></p>
     <div class="fld"><label for="pc0">작물 1</label><input type="text" id="pc0" placeholder="예) 고추" autocomplete="off"><div class="ac" id="pc0-ac" hidden role="listbox"></div></div>
     <div class="fld"><label for="pc1">작물 2</label><input type="text" id="pc1" placeholder="예) 토마토" autocomplete="off"><div class="ac" id="pc1-ac" hidden role="listbox"></div></div>
     <div class="fld"><label for="pc2">작물 3 (없어도 됨)</label><input type="text" id="pc2" autocomplete="off"><div class="ac" id="pc2-ac" hidden role="listbox"></div></div>
@@ -296,7 +296,7 @@ details.card .body{margin-top:var(--sp-3)}
 <div class="tab-p" id="t4" role="tabpanel" hidden>
   <section class="card" aria-labelledby="t4-title">
     <h2 id="t4-title">병해충으로 농약 찾기</h2>
-    <p class="hint" style="margin:0 0 var(--sp-3)">병해충 이름을 적고, 작물을 함께 넣으면 그 작물에 등록된 것만 보여줍니다.</p>
+    <p class="hint" style="margin:0 0 var(--sp-3)">병해충 이름을 적고, 작물을 함께 넣으면 그 작물에 <span style="white-space:nowrap">등록된 것만 보여줍니다.</span></p>
     <div class="fld"><label for="pq">병해충</label><input type="text" id="pq" placeholder="예) 탄저병, 파밤나방" autocomplete="off"><div class="ac" id="pq-ac" hidden role="listbox"></div></div>
     <div class="fld"><label for="pcrop">작물 (없어도 됨)</label><input type="text" id="pcrop" placeholder="예) 고추" autocomplete="off"><div class="ac" id="pcrop-ac" hidden role="listbox"></div></div>
     <div class="fld">
@@ -315,7 +315,7 @@ details.card .body{margin-top:var(--sp-3)}
 <div class="tab-p" id="t5" role="tabpanel" hidden>
   <section class="card" aria-labelledby="t5-title">
     <h2 id="t5-title">친환경 농업자재 찾기</h2>
-    <p class="hint" style="margin:0 0 var(--sp-3)">국립농산물품질관리원에 공시된 유기농업자재 중 유효기간이 남은 것만 보여줍니다.</p>
+    <p class="hint" style="margin:0 0 var(--sp-3)">국립농산물품질관리원에 공시된 <span style="white-space:nowrap">유기농업자재 중</span><br>유효기간이 남은 것만 보여줍니다.</p>
     <div class="fld"><label for="oc">작물</label><input type="text" id="oc" placeholder="예) 고추" autocomplete="off"><div class="ac" id="oc-ac" hidden role="listbox"></div></div>
     <div class="fld"><label for="op">병해충 (없어도 됨)</label><input type="text" id="op" placeholder="예) 진딧물" autocomplete="off"><div class="ac" id="op-ac" hidden role="listbox"></div></div>
     <div class="fld">
