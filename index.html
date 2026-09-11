@@ -60,7 +60,8 @@ input:focus-visible{border-color:var(--focus);box-shadow:0 0 0 3px rgba(11,87,20
 .cal[hidden]{display:none}
 .cal .ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--sp-2)}
 .cal .ch b{font-size:var(--fs-input);font-weight:800;font-variant-numeric:tabular-nums}
-.cal .ch button{width:56px;height:52px;border:2px solid var(--line);border-radius:var(--r-s);background:var(--paper);font:inherit;font-size:26px;font-weight:700;color:var(--ink-2);cursor:pointer;line-height:1}
+.cal .ch button{width:56px;height:52px;border:2px solid var(--line);border-radius:var(--r-s);background:var(--paper);font:inherit;font-weight:700;color:var(--ink-2);cursor:pointer;line-height:1}
+.cal .ch button svg{display:block;margin:auto}   /* 아이콘은 SVG 스트로크 1.8 · currentColor (디자인 라이브러리 아이콘 규칙) */
 .cal .ch button:active{background:var(--line-2)}
 .cal .ch button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .cal .g{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
@@ -98,7 +99,7 @@ input:focus-visible{border-color:var(--focus);box-shadow:0 0 0 3px rgba(11,87,20
 .step button:active{background:var(--line-2)}
 .step button:focus-visible{outline:3px solid var(--focus);outline-offset:-3px}
 .step #cnt{flex:1;display:flex;align-items:center;justify-content:center;border:0;border-left:2px solid var(--line);border-right:2px solid var(--line);background:var(--paper);font:inherit;font-size:var(--fs-input);font-weight:700;color:var(--ink);cursor:pointer;font-variant-numeric:tabular-nums}
-.step #cnt::after{content:"▾";margin-left:8px;font-size:var(--fs-small);color:var(--ink-2)}   /* 가운데를 누르면 1~5회째 목록 */
+.step #cnt::after{content:"";width:16px;height:16px;margin-left:8px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat}   /* 가운데를 누르면 1~5회째 목록 */
 .step #cnt[aria-expanded=true]{background:var(--accent-bg)}
 .step #cnt:focus-visible{outline:3px solid var(--focus);outline-offset:-3px}
 .cnt-list{margin-top:4px;border:2px solid var(--ink-2);border-radius:var(--r-s);background:var(--paper);overflow:hidden}
@@ -381,7 +382,7 @@ function makeCal(hid,btn,box){
   function set(d){hid.value=iso(d);hid.dispatchEvent(new Event('input',{bubbles:true}));label();}
   function draw(){
     var y=view.getFullYear(),m=view.getMonth();var sel=parseD(hid.value);
-    var h='<div class="ch"><button type="button" data-n="-1" aria-label="이전 달">◀</button><b>'+y+'년 '+(m+1)+'월</b><button type="button" data-n="1" aria-label="다음 달">▶</button></div><div class="g">';
+    var h='<div class="ch"><button type="button" data-n="-1" aria-label="이전 달"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button><b>'+y+'년 '+(m+1)+'월</b><button type="button" data-n="1" aria-label="다음 달"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></div><div class="g">';
     DAY.forEach(function(w,i){h+='<div class="w'+(i===0?' su':'')+'">'+w+'</div>';});
     var first=new Date(y,m,1).getDay(),last=new Date(y,m+1,0).getDate();
     for(var i=0;i<first;i++)h+='<div></div>';
