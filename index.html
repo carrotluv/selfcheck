@@ -164,6 +164,7 @@ details.card summary:focus-visible{outline:3px solid var(--focus);outline-offset
 details.card .body{margin-top:var(--sp-3)}
 .foot{padding:var(--sp-4) calc(var(--sp-4)*2);font-size:var(--fs-small);color:var(--mute);line-height:1.55;border-top:1px solid var(--line)}
 .foot-h{font-size:var(--fs-body);color:var(--ink-2);margin-bottom:var(--sp-3)}
+.foot-made{margin-bottom:var(--sp-3);text-wrap:balance}   /* 다섯 줄이라 마지막 줄만 짧게 남지 않게 고르게 나눈다 */
 .foot-h b{display:block;color:var(--ink);font-size:var(--fs-label)}
 .src{display:block}   /* 항목명 한 줄 · 출처 한 줄 · 기준일 한 줄 (좁은 폭에서 외톨이 줄 방지) */
 .src dt{font-weight:700;color:var(--ink-2);margin-top:var(--sp-2)}
@@ -186,7 +187,7 @@ details.card .body{margin-top:var(--sp-3)}
 <body>
 <header class="top">
   <h1>출하 전 셀프체크</h1>
-  <p>파주시 농산물 안전분석실</p>
+  <p>농약 안전사용 참고 도구</p>
 </header>
 <nav class="tabs" role="tablist" aria-label="기능">
   <button type="button" role="tab" aria-selected="true" data-t="t0">셀프체크</button>
@@ -342,6 +343,7 @@ details.card .body{margin-top:var(--sp-3)}
 </main>
 <footer class="foot">
   <p class="foot-h"><b>참고용 안내입니다.</b></p>
+  <p class="foot-made">파주시 농업기술센터 농산물 안전분석실에서 분석을 담당하는 직원이 만든 개인 제작 도구입니다. 파주시가 제공하는 공식 서비스는 아니며, 실제 출하 여부는 분석실 통보를 따라 주세요.</p>
   <dl class="src">
     <dt>농약 등록정보</dt><dd>농촌진흥청 농약안전정보시스템<small id="m-psis"></small></dd>
     <dt>잔류허용기준</dt><dd>식품의약품안전처 식품공전<small id="m-mrl"></small></dd>
