@@ -579,9 +579,9 @@ function mrlText(pi,ci){
   return en.map(function(e,i){var m=mrlOf(e,ci);return '<span class="nw">'+fmtV(m.v)+' mg/kg</span> <small>('+esc(ko[i]||e)+(m.pls?' · 등록 안 된 작물 기준':'')+')</small>';}).join('<br>');
 }
 function renderBad(out,ci,crop,name){
-  var html='<div class="k">'+esc(crop)+'에 쓸 수 없는 농약입니다</div><div class="big">'+esc(name)+'</div>';
+  var html='<div class="k">'+esc(crop)+'에 사용할 수 없는 농약입니다</div><div class="big">'+esc(name)+'</div>';
   var pis=candProds();var en=ens(pis[0]);var rows=[];
-  rows.push(['등록','<span class="ng">'+esc(crop)+'에 미등록 — <span class="nw">사용 금지</span></span>']);
+  rows.push(['등록','<span class="ng"><span class="nw">사용금지</span>'+(crop.length<=3?'<wbr>(<span class="nw">'+esc(crop)+'에 미등록)</span>':'<br>('+esc(crop)+'&#8288;에&nbsp;미등록)')+'</span>']);   // 짧은 작물명은 넘칠 때만 '사용금지' 뒤에서 끊고 괄호째 한 줄, 긴 작물명은 괄호를 늘 다음 줄로('에 미등록)'은 앞 글자에 붙임)
   rows.push(['잔류허용기준',mrlText(pis[0],ci)]);
   var okc=[];for(var c in D.cp){if(pis.some(function(pi){return D.cp[c][pi];}))okc.push(D.crops[c]);}
   if(okc.length)rows.push(['등록된 작물',nwList(okc.slice(0,8))+(okc.length>8?' <span class="nw">외 '+(okc.length-8)+'개</span>':'')]);
