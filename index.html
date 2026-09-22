@@ -576,7 +576,7 @@ function kos(pi){  // 품목명에서 제형을 뗀 한글 성분명 (혼합제�
 }
 function mrlText(pi,ci){
   var en=ens(pi),ko=kos(pi);
-  return en.map(function(e,i){var m=mrlOf(e,ci);return '<span class="nw">'+fmtV(m.v)+' mg/kg</span> <small>('+esc(ko[i]||e)+(m.pls?' · 등록 안 된 작물 기준':'')+')</small>';}).join('<br>');
+  return en.map(function(e,i){var m=mrlOf(e,ci);return '<span class="nw">'+fmtV(m.v)+' mg/kg</span> <small>('+esc(ko[i]||e)+(m.pls?' · <span class="nw">미등록 작물 기준</span>':'')+')</small>';}).join('<br>');
 }
 function renderBad(out,ci,crop,name){
   var html='<div class="k">'+esc(crop)+'에 사용할 수 없는 농약입니다</div><div class="big">'+esc(name)+'</div>';
