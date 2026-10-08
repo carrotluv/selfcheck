@@ -155,6 +155,7 @@ input:focus-visible{border-color:var(--focus);box-shadow:0 0 0 3px rgba(11,87,20
 .ct td.d{color:var(--ink-2);white-space:normal;overflow-wrap:anywhere}   /* 병해충도 가운데 — 표는 헤더·내용 전부 가운데 정렬 */
 .pl-sum{font-size:var(--fs-body);font-weight:700;color:var(--ink-2);margin-bottom:var(--sp-2)}
 .more{margin-top:var(--sp-2);height:48px;background:var(--paper);color:var(--accent-ink);border:2px solid var(--line)}
+.more[hidden]{display:none}   /* .btn{display:flex}가 hidden을 덮어 다 본 뒤에도 '더 보기'가 남던 것 */
 .pl .p.diff{border-color:var(--red)}
 .tag{display:inline-block;font-size:var(--fs-small);font-weight:700;border:2px solid;border-radius:20px;padding:1px 10px;white-space:nowrap;vertical-align:2px}
 .tag.r{color:var(--red);border-color:var(--red)}            /* 다름 = 빨강 테두리 */
